@@ -7,10 +7,8 @@ class Battle < Sinatra::Base
      register Sinatra::Reloader
    end
 
-  #  get '/' do
-  #   'Testing infrastucture working!'
-  #  end
   enable :sessions
+  
    get '/' do
      erb(:index)
    end
@@ -21,16 +19,18 @@ class Battle < Sinatra::Base
      redirect '/play'
    end
 
+   post '/play' do
+    session[:player_1_attack] = params[:player_1_attack]
+    session[:player_2_attack] = params[:player_2_attack]
+    redirect '/play'
+   end
+
    get '/play' do
      @player_1 = $player_1.name
      @player_2 = $player_2.name
-     erb(:player)
+     @player_1_attack = session[:player_1_attack]
+     @player_2_attack = session[:player_2_attack]
+     erb(:play)
    end
-
-   get '/attack' do
-    @player_1_name = $player_1_name
-    @player_2_name = $player_2_name
-    erb(:attack)
-  end
  end
   
